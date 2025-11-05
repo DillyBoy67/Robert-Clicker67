@@ -1,11 +1,17 @@
-/* Basic layout */
-body {
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body */
+body, html {
+  width: 100%;
+  height: 100%;
   font-family: Arial, sans-serif;
-  text-align: center;
   background-color: #222;
   color: white;
-  margin: 0;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,20 +25,32 @@ body {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Buttons */
+/* Headings & text */
+h1 {
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 5px 0;
+}
+
+/* Buttons general */
 button {
   background-color: #444;
   color: white;
   border: none;
-  padding: 10px 15px;
-  margin: 5px;
   border-radius: 8px;
+  padding: 10px 15px;
+  margin: 5px 0;
   cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.2s ease;
-  width: 90%;
+  width: 100%;
   max-width: 400px;
+  transition: transform 0.1s ease, background-color 0.2s ease;
 }
 
 button:hover {
@@ -43,25 +61,35 @@ button:active {
   transform: scale(0.97);
 }
 
-/* Upgrades */
+/* Upgrade buttons grid */
 #upgrades {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  width: 100%;
   margin-top: 20px;
 }
 
 /* Rebirth section */
 #rebirthSection {
   margin-top: 30px;
+  width: 100%;
 }
 
 /* Customize menu */
 #customizeMenu {
   margin-top: 30px;
-  padding-top: 10px;
+  width: 100%;
   border-top: 1px solid #555;
+  padding-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#customizeMenu input[type="color"] {
+  margin-left: 5px;
+  margin-right: 15px;
 }
 
 /* Admin panel */
@@ -72,15 +100,35 @@ button:active {
   padding: 15px;
   margin-top: 20px;
   border-radius: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 #adminPanel button {
   border: 1px solid red;
   color: red;
   background-color: #111;
-  width: auto;
+  margin-top: 5px;
+  width: 100%;
+  max-width: 250px;
 }
 
+/* Hidden class */
 .hidden {
   display: none;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  #game {
+    padding: 15px;
+  }
+  #upgrades {
+    grid-template-columns: 1fr;
+  }
+  button {
+    max-width: 100%;
+  }
 }
