@@ -2,56 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Robert Clicker</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="game">
-  <h1>Robert Clicker</h1>
-  <p><strong>Arm Hairs:</strong> <span id="hairs">0</span></p>
-  <p><strong>Rebirths:</strong> <span id="rebirths">0</span> | <strong>Multiplier:</strong> <span id="multiplier">1x</span></p>
-  <p><strong>CPS:</strong> <span id="cps">0</span></p>
-  <p>Next Rebirth Cost: <span id="nextRebirthCost">100,000</span></p>
+    <h1>Robert Clicker</h1>
+    <p><strong>Arm Hairs:</strong> <span id="hairs">0</span></p>
+    <p><strong>Rebirths:</strong> <span id="rebirths">0</span> | <strong>Multiplier:</strong> <span id="multiplier">1x</span></p>
+    <p><strong>CPS:</strong> <span id="cps">0</span></p>
+    <p>Next Rebirth Cost: <span id="nextRebirthCost">100,000</span></p>
 
-  <button id="clickButton">Trim that Hair!</button><br>
-  <button id="rebirthBtn">Rebirth</button>
+    <button id="clickButton">Trim that Hair!</button><br>
+    <button id="rebirthBtn">Rebirth</button>
 
-  <h3>Upgrades</h3>
-  <div id="upgrades"></div>
+    <h3>Upgrades</h3>
+    <div id="upgrades"></div>
 
-  <h4>Customize</h4>
-  <label>Button <input id="buttonColor" type="color" value="#ffffff"></label>
-  <label>Background <input id="bgColor" type="color" value="#f8f8f8"></label>
-  <button onclick="applyColors()">Apply</button>
+    <h4>Customize</h4>
+    <label>Button <input id="buttonColor" type="color" value="#ffffff"></label>
+    <label>Background <input id="bgColor" type="color" value="#f8f8f8"></label>
+    <button onclick="applyColors()">Apply</button>
 
-  <h4>Save / Load</h4>
-  <input type="text" id="saveCodeInput" placeholder="Enter save code">
-  <button onclick="saveToCode()">Save</button>
-  <button onclick="loadFromCode()">Load</button>
+    <h4>Save / Load</h4>
+    <input type="text" id="saveCodeInput" placeholder="Enter save code">
+    <button onclick="saveToCode()">Save</button>
+    <button onclick="loadFromCode()">Load</button>
 
-  <!-- Admin Panel -->
-  <button id="adminBtn">Activate Admin Panel</button>
-  <div id="adminPanel" style="display:none; background:black; color:red; padding:20px; border:2px solid red; margin-top:10px;">
-    <h3>Admin Panel</h3>
-    <div>
-      <label>Insert Money: <input type="number" id="adminMoneyInput" value="0"></label>
-      <button onclick="adminInsertMoney()">Give Money</button>
+    <!-- Admin Panel -->
+    <button id="adminBtn">Activate Admin Panel</button>
+    <div id="adminPanel" class="admin-panel">
+        <h3>Admin Panel</h3>
+        <div>
+            <label>Insert Money: <input type="number" id="adminMoneyInput" value="0"></label>
+            <button onclick="adminInsertMoney()">Give Money</button>
+        </div>
+        <div>
+            <label>Click Interval (seconds): <input type="number" id="adminIntervalInput" value="1" step="0.0000000000000000000001"></label>
+            <button onclick="adminSetInterval()">Set Interval</button>
+        </div>
+        <div>
+            <label>Buy Upgrades: <input type="number" id="adminBuyInput" value="1"></label>
+            <button onclick="adminBuyUpgrades()">Buy</button>
+        </div>
+        <div>
+            <button onclick="adminYameen()">Yameen</button>
+        </div>
+        <button onclick="toggleAdminPanel()">Close Admin Panel</button>
     </div>
-    <div>
-      <label>Click Interval (seconds): <input type="number" id="adminIntervalInput" value="1" step="0.0000000000000000000001"></label>
-      <button onclick="adminSetInterval()">Set Interval</button>
-    </div>
-    <div>
-      <label>Buy Upgrades: <input type="number" id="adminBuyInput" value="1"></label>
-      <button onclick="adminBuyUpgrades()">Buy</button>
-    </div>
-    <div>
-      <button onclick="adminYameen()">Yameen</button>
-    </div>
-    <button onclick="toggleAdminPanel()">Close Admin Panel</button>
-  </div>
-
 </div>
 <script src="script.js"></script>
 </body>
