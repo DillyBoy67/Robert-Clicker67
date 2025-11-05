@@ -1,38 +1,51 @@
-body {
-    font-family: "Comic Sans MS", ComicSans, cursive;
-    background: #f8f8f8;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
+/* ---------------- ROOT COLORS ---------------- */
+:root {
+    --bg-color: #f8f8f8;
+    --button-bg: #ffffff;
+    --button-border: #000000;
+    --text-color: #000000;
 }
 
+/* ---------------- BODY ---------------- */
+body {
+    font-family: "Comic Sans MS", ComicSans, cursive;
+    background: var(--bg-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* ---------------- GAME CONTAINER ---------------- */
 #game {
     max-width: 720px;
     width: 100%;
     text-align: center;
 }
 
+/* ---------------- BUTTONS ---------------- */
 button {
     cursor: pointer;
     padding: 10px 20px;
     margin: 5px;
     border-radius: 8px;
-    border: 2px solid #000;
-    background: #fff;
+    border: 2px solid var(--button-border);
+    background: var(--button-bg);
     font-size: 16px;
-    transition: transform .1s;
+    transition: transform 0.1s;
 }
 
 button:active {
-    transform: scale(.97);
+    transform: scale(0.97);
 }
 
+/* ---------------- CLICK BUTTON ---------------- */
 #clickButton {
     font-size: 24px;
     padding: 16px 32px;
 }
 
+/* ---------------- UPGRADES ---------------- */
 #upgrades {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -42,11 +55,22 @@ button:active {
 
 .upgrade {
     padding: 12px;
-    background: #fff;
+    background: #ffffff;
     border: 1px solid #ccc;
     border-radius: 8px;
 }
 
+/* ---------------- REBIRTH BUTTON ---------------- */
+#rebirthBtn {
+    margin-top: 12px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--button-bg);
+    color: var(--text-color);
+    border: 2px solid var(--button-border);
+}
+
+/* ---------------- ADMIN PANEL ---------------- */
 #adminPanel {
     display: none;
     background: black;
@@ -54,4 +78,16 @@ button:active {
     padding: 20px;
     border: 2px solid red;
     margin-top: 10px;
+    text-align: left;
+}
+
+#adminPanel h3 {
+    margin-top: 0;
+}
+
+/* ---------------- INPUT FIELDS ---------------- */
+input[type="text"], input[type="number"], input[type="color"] {
+    margin: 0 5px;
+    padding: 4px 6px;
+    font-size: 14px;
 }
