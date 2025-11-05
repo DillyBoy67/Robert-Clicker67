@@ -29,6 +29,29 @@
   <input type="text" id="saveCodeInput" placeholder="Enter save code">
   <button onclick="saveToCode()">Save</button>
   <button onclick="loadFromCode()">Load</button>
+
+  <!-- Admin Panel -->
+  <button id="adminBtn">Activate Admin Panel</button>
+  <div id="adminPanel" style="display:none; background:black; color:red; padding:20px; border:2px solid red; margin-top:10px;">
+    <h3>Admin Panel</h3>
+    <div>
+      <label>Insert Money: <input type="number" id="adminMoneyInput" value="0"></label>
+      <button onclick="adminInsertMoney()">Give Money</button>
+    </div>
+    <div>
+      <label>Click Interval (seconds): <input type="number" id="adminIntervalInput" value="1" step="0.0000000000000000000001"></label>
+      <button onclick="adminSetInterval()">Set Interval</button>
+    </div>
+    <div>
+      <label>Buy Upgrades: <input type="number" id="adminBuyInput" value="1"></label>
+      <button onclick="adminBuyUpgrades()">Buy</button>
+    </div>
+    <div>
+      <button onclick="adminYameen()">Yameen</button>
+    </div>
+    <button onclick="toggleAdminPanel()">Close Admin Panel</button>
+  </div>
+
 </div>
 <script src="script.js"></script>
 </body>
