@@ -2,11 +2,12 @@
 let hairs = 0;
 let hairsPerClick = 1;
 let hairsPerSecond = 0;
-let clickCount = 0;
 let rebirths = 0;
 let rebirthCost = 100000;
 let multiplier = 1;
-let autoInterval = 1000;
+
+// --- Manual click tracking ---
+let manualClicks = 0;
 
 // --- Upgrades ---
 let upgrades = [
@@ -47,7 +48,6 @@ function saveGame() {
 // --- Update Display ---
 function updateDisplay() {
   document.getElementById("hairCount").innerText = `Arm Hairs: ${Math.floor(hairs)}`;
-  document.getElementById("cps").innerText = `CPS: ${(hairsPerSecond * multiplier + clickCount * multiplier).toFixed(1)}`;
   document.getElementById("rebirthCount").innerText = `Rebirths: ${rebirths}`;
   document.getElementById("rebirthButton").innerText = `Rebirth (Cost: ${rebirthCost})`;
 }
@@ -67,7 +67,7 @@ function updateUpgrades() {
 // --- Click Button ---
 document.getElementById("clickButton").onclick = () => {
   hairs += hairsPerClick * multiplier;
-  clickCount++;
+  manualClicks++;
   updateDisplay();
 };
 
@@ -76,6 +76,12 @@ setInterval(() => {
   hairs += hairsPerSecond * multiplier;
   updateDisplay();
   saveGame();
+}, 1000);
+
+// --- CPS Display ---
+setInterval(() => {
+  document.getElementById("cps").innerText = `CPS: ${(hairsPerSecond * multiplier + manualClicks * multiplier).toFixed(1)}`;
+  manualClicks = 0;
 }, 1000);
 
 // --- Upgrade Buttons ---
@@ -102,7 +108,7 @@ document.getElementById("rebirthButton").onclick = () => {
     rebirthCost *= 10;
 
     upgrades.forEach(u => {
-      const lost = Math.floor(u.level * 0.5); // remove 50% of upgrades
+      const lost = Math.floor(u.level * 0.5); // remove 50%
       u.level -= lost;
       if (u.level < 0) u.level = 0;
     });
@@ -115,6 +121,26 @@ document.getElementById("rebirthButton").onclick = () => {
     saveGame();
   }
 };
+
+// --- Reset Button ---
+const resetBtn = document.createElement("button");
+resetBtn.innerText = "Reset Game";
+resetBtn.onclick = () => {
+  const input = prompt("Type 'Reset' to confirm:");
+  if (input === "Reset") {
+    hairs = 0;
+    hairsPerClick = 1;
+    hairsPerSecond = 0;
+    multiplier = 1;
+    rebirths = 0;
+    rebirthCost = 100000;
+    upgrades.forEach(u => u.level = 0);
+    updateUpgrades();
+    updateDisplay();
+    saveGame();
+  }
+};
+document.getElementById("game").appendChild(resetBtn);
 
 // --- Customize Menu ---
 document.getElementById('bgColorPicker').oninput = e => {
@@ -132,15 +158,23 @@ const adminBtn = document.getElementById("adminButton");
 const adminPanel = document.getElementById("adminPanel");
 const closeAdmin = document.getElementById("closeAdmin");
 
+// Ensure hidden by default
+adminPanel.classList.add("hidden");
+
 adminBtn.onclick = () => {
   const pass = prompt("Enter password:");
-  if (pass === "I867") adminPanel.classList.remove("hidden");
+  if (pass === "I867") {
+    adminPanel.classList.remove("hidden");
+  } else {
+    alert("Incorrect password");
+  }
 };
 
 closeAdmin.onclick = () => adminPanel.classList.add("hidden");
 
+// Admin buttons (simple demo)
 document.getElementById("giveMoney").onclick = () => {
-  const amount = parseFloat(prompt("Enter amount of hairs to add:"));
+  const amount = parseFloat(prompt("Enter hairs to add:"));
   if (!isNaN(amount)) {
     hairs += amount;
     updateDisplay();
@@ -148,7 +182,7 @@ document.getElementById("giveMoney").onclick = () => {
 };
 
 document.getElementById("setClickInterval").onclick = () => {
-  const newInterval = parseFloat(prompt("Enter new auto click interval (seconds):"));
+  const newInterval = parseFloat(prompt("Enter new auto click interval in seconds:"));
   if (!isNaN(newInterval) && newInterval > 0) {
     clearInterval(autoInterval);
     autoInterval = setInterval(() => {
