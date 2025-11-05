@@ -1,93 +1,174 @@
-/* ---------------- ROOT COLORS ---------------- */
-:root {
-    --bg-color: #f8f8f8;
-    --button-bg: #ffffff;
-    --button-border: #000000;
-    --text-color: #000000;
+let hairs = 0;
+let hairsPerClick = 1;
+let hairsPerSecond = 0;
+let clickCount = 0;
+let rebirths = 0;
+let rebirthCost = 100000;
+let multiplier = 1;
+let autoInterval = 1000;
+
+// Upgrade data
+let upgrades = [
+  { name: "More Trimming", baseCost: 20, costScale: 5, clickBonus: 1, autoBonus: 0, level: 0 },
+  { name: "Unsafety Scissors", baseCost: 200, costScale: 25, clickBonus: 5, autoBonus: 0, level: 0 },
+  { name: "Razor Blade", baseCost: 500, costScale: 50, clickBonus: 0, autoBonus: 20, level: 0 },
+  { name: "Safety Razor", baseCost: 5000, costScale: 200, clickBonus: 0, autoBonus: 100, level: 0 },
+  { name: "Homer Simpson Automatic Razor", baseCost: 10000, costScale: 2000, clickBonus: 500, autoBonus: 500, level: 0 }
+];
+
+// Load game
+window.onload = () => {
+  const save = JSON.parse(localStorage.getItem('robertClickerSave'));
+  if (save) {
+    hairs = save.hairs || 0;
+    hairsPerClick = save.hairsPerClick || 1;
+    hairsPerSecond = save.hairsPerSecond || 0;
+    rebirths = save.rebirths || 0;
+    multiplier = save.multiplier || 1;
+    upgrades = save.upgrades || upgrades;
+  }
+  updateUpgrades();
+  updateDisplay();
+};
+
+function saveGame() {
+  localStorage.setItem('robertClickerSave', JSON.stringify({
+    hairs,
+    hairsPerClick,
+    hairsPerSecond,
+    rebirths,
+    multiplier,
+    upgrades
+  }));
 }
 
-/* ---------------- BODY ---------------- */
-body {
-    font-family: "Comic Sans MS", ComicSans, cursive;
-    background: var(--bg-color);
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
+function updateDisplay() {
+  document.getElementById("hairCount").innerText = `Arm Hairs: ${Math.floor(hairs)}`;
+  document.getElementById("cps").innerText = `CPS: ${(hairsPerSecond * multiplier + clickCount * multiplier).toFixed(1)}`;
+  document.getElementById("rebirthCount").innerText = `Rebirths: ${rebirths}`;
+  document.getElementById("rebirthButton").innerText = `Rebirth (Cost: ${rebirthCost})`;
 }
 
-/* ---------------- GAME CONTAINER ---------------- */
-#game {
-    max-width: 720px;
-    width: 100%;
-    text-align: center;
+function updateUpgrades() {
+  upgrades.forEach((u, i) => {
+    const btn = document.getElementById(`upgrade${i + 1}`);
+    const cost = u.baseCost + u.level * u.costScale;
+    btn.innerHTML = `${u.name} (Lvl ${u.level})<br>
+    +${u.clickBonus} per click, +${u.autoBonus} per second<br>
+    Cost: ${cost}`;
+  });
 }
 
-/* ---------------- BUTTONS ---------------- */
-button {
-    cursor: pointer;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 8px;
-    border: 2px solid var(--button-border);
-    background: var(--button-bg);
-    font-size: 16px;
-    transition: transform 0.1s;
-}
+document.getElementById("clickButton").onclick = () => {
+  hairs += hairsPerClick * multiplier;
+  clickCount++;
+  updateDisplay();
+};
 
-button:active {
-    transform: scale(0.97);
-}
+// Auto hairs
+setInterval(() => {
+  hairs += hairsPerSecond * multiplier;
+  updateDisplay();
+  saveGame();
+}, 1000);
 
-/* ---------------- CLICK BUTTON ---------------- */
-#clickButton {
-    font-size: 24px;
-    padding: 16px 32px;
-}
+// Upgrades
+upgrades.forEach((u, i) => {
+  document.getElementById(`upgrade${i + 1}`).onclick = () => {
+    const cost = u.baseCost + u.level * u.costScale;
+    if (hairs >= cost) {
+      hairs -= cost;
+      u.level++;
+      hairsPerClick += u.clickBonus;
+      hairsPerSecond += u.autoBonus;
+      updateUpgrades();
+      updateDisplay();
+    }
+  };
+});
 
-/* ---------------- UPGRADES ---------------- */
-#upgrades {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    margin-top: 16px;
-}
+// Rebirth
+document.getElementById("rebirthButton").onclick = () => {
+  if (hairs >= rebirthCost) {
+    hairs = 0;
+    rebirths++;
+    multiplier *= 2;
+    rebirthCost *= 10;
 
-.upgrade {
-    padding: 12px;
-    background: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
+    upgrades.forEach(u => {
+      const lost = Math.floor(u.level * 0.5);
+      u.level -= lost;
+      if (u.level < 0) u.level = 0;
+    });
 
-/* ---------------- REBIRTH BUTTON ---------------- */
-#rebirthBtn {
-    margin-top: 12px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: var(--button-bg);
-    color: var(--text-color);
-    border: 2px solid var(--button-border);
-}
+    hairsPerClick = 1 + upgrades.reduce((sum, u) => sum + u.level * u.clickBonus, 0);
+    hairsPerSecond = upgrades.reduce((sum, u) => sum + u.level * u.autoBonus, 0);
+    updateUpgrades();
+    updateDisplay();
+    saveGame();
+  }
+};
 
-/* ---------------- ADMIN PANEL ---------------- */
-#adminPanel {
-    display: none;
-    background: black;
-    color: red;
-    padding: 20px;
-    border: 2px solid red;
-    margin-top: 10px;
-    text-align: left;
-}
+// Customization
+document.getElementById('bgColorPicker').oninput = e => {
+  document.body.style.backgroundColor = e.target.value;
+};
 
-#adminPanel h3 {
-    margin-top: 0;
-}
+document.getElementById('btnColorPicker').oninput = e => {
+  document.querySelectorAll('button').forEach(btn => {
+    btn.style.backgroundColor = e.target.value;
+  });
+};
 
-/* ---------------- INPUT FIELDS ---------------- */
-input[type="text"], input[type="number"], input[type="color"] {
-    margin: 0 5px;
-    padding: 4px 6px;
-    font-size: 14px;
-}
+// Admin Panel
+const adminBtn = document.getElementById("adminButton");
+const adminPanel = document.getElementById("adminPanel");
+const closeAdmin = document.getElementById("closeAdmin");
+
+adminBtn.onclick = () => {
+  const pass = prompt("Enter password:");
+  if (pass === "I867") adminPanel.classList.remove("hidden");
+};
+
+closeAdmin.onclick = () => adminPanel.classList.add("hidden");
+
+document.getElementById("giveMoney").onclick = () => {
+  const amount = parseFloat(prompt("Enter amount of hairs to add:"));
+  if (!isNaN(amount)) {
+    hairs += amount;
+    updateDisplay();
+  }
+};
+
+document.getElementById("setClickInterval").onclick = () => {
+  const newInterval = parseFloat(prompt("Enter new auto click interval (seconds):"));
+  if (!isNaN(newInterval) && newInterval > 0) {
+    clearInterval(autoInterval);
+    autoInterval = setInterval(() => {
+      hairs += hairsPerSecond * multiplier;
+      updateDisplay();
+    }, newInterval * 1000);
+  }
+};
+
+document.getElementById("buyUpgrades").onclick = () => {
+  const count = parseInt(prompt("Enter number of upgrades to buy for each type:"));
+  if (!isNaN(count) && count > 0) {
+    upgrades.forEach(u => {
+      u.level += count;
+      hairsPerClick += u.clickBonus * count;
+      hairsPerSecond += u.autoBonus * count;
+    });
+    updateUpgrades();
+    updateDisplay();
+  }
+};
+
+document.getElementById("yameenMode").onclick = () => {
+  document.querySelectorAll('*').forEach(el => {
+    if (el.tagName !== "SCRIPT" && el.tagName !== "STYLE") {
+      el.style.fontFamily = "Impact, sans-serif";
+      el.innerText = "Yameen";
+    }
+  });
+};
