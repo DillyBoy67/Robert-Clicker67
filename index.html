@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robert Clicker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game">
+  <h1>Robert Clicker</h1>
+  <p><strong>Arm Hairs:</strong> <span id="hairs">0</span></p>
+  <p><strong>Rebirths:</strong> <span id="rebirths">0</span> | <strong>Multiplier:</strong> <span id="multiplier">1x</span></p>
+  <p><strong>CPS:</strong> <span id="cps">0</span></p>
+  <p>Next Rebirth Cost: <span id="nextRebirthCost">100,000</span></p>
+
+  <button id="clickButton">Trim that Hair!</button><br>
+  <button id="rebirthBtn">Rebirth</button>
+
+  <h3>Upgrades</h3>
+  <div id="upgrades"></div>
+
+  <h4>Customize</h4>
+  <label>Button <input id="buttonColor" type="color" value="#ffffff"></label>
+  <label>Background <input id="bgColor" type="color" value="#f8f8f8"></label>
+  <button onclick="applyColors()">Apply</button>
+
+  <h4>Save / Load</h4>
+  <input type="text" id="saveCodeInput" placeholder="Enter save code">
+  <button onclick="saveToCode()">Save</button>
+  <button onclick="loadFromCode()">Load</button>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
