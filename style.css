@@ -9,12 +9,13 @@
 body, html {
   width: 100%;
   height: 100%;
-  font-family: Arial, sans-serif;
+  font-family: "Comic Sans MS", ComicSans, cursive;
   background-color: #222;
   color: white;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding: 20px;
 }
 
 /* Game container */
@@ -28,6 +29,7 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
 }
 
 /* Headings & text */
@@ -39,7 +41,7 @@ p {
   margin: 5px 0;
 }
 
-/* Buttons general */
+/* Buttons */
 button {
   background-color: #444;
   color: white;
@@ -61,7 +63,7 @@ button:active {
   transform: scale(0.97);
 }
 
-/* Upgrade buttons grid */
+/* Upgrade buttons container */
 #upgrades {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -70,15 +72,24 @@ button:active {
   margin-top: 20px;
 }
 
+/* Upgrade buttons text smaller for mobile */
+#upgrades button {
+  font-size: 14px;
+  text-align: center;
+}
+
 /* Rebirth section */
 #rebirthSection {
-  margin-top: 30px;
+  margin-top: 20px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Customize menu */
 #customizeMenu {
-  margin-top: 30px;
+  margin-top: 20px;
   width: 100%;
   border-top: 1px solid #555;
   padding-top: 10px;
@@ -104,6 +115,8 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 #adminPanel button {
@@ -130,5 +143,9 @@ button:active {
   }
   button {
     max-width: 100%;
+  }
+  #customizeMenu {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
